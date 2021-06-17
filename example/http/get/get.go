@@ -1,13 +1,13 @@
-package main
+package Get
 
 import (
+	"example/http/common"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 )
 
-func doGet() {
+func DoGet() {
 	simpleGet()
 	urlEncode1()
 	urlEncode2()
@@ -20,7 +20,7 @@ func simpleGet() {
 		return
 	}
 
-	printResponse(response)
+	common.PrintResponse(response)
 }
 
 func urlEncode1() {
@@ -48,13 +48,5 @@ func getWithHeader() {
 		return
 	}
 
-	printResponse(response)
-}
-
-func printResponse(response *http.Response) {
-	defer response.Body.Close()
-
-	bytes, _ := ioutil.ReadAll(response.Body)
-	str := string(bytes)
-	fmt.Println(str)
+	common.PrintResponse(response)
 }
