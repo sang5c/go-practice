@@ -9,4 +9,4 @@
   - Go의 컴파일러, 기본 모듈들이 담기는 공간.
   - Windows의 default path는 C:\Program Files\go 
 - go modules
-  - go mod init "모듈명"을 통해 초기화 할 수 있다. 이걸 하면 GOPATH를 사용하지 않아도 된다.   
+  - go mod init "모듈명"을 통해 초기화 할 수 있다. 이걸 하면 GOPATH를 사용하지 않아도 된다.
