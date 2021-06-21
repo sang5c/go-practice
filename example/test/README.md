@@ -39,4 +39,25 @@
       exit status 1
       FAIL    example/test    0.110s
       ```
+- testify assert 사용하기
+  ```go
+  package main
+
+  import (
+    "github.com/stretchr/testify/assert"
+    "testing"
+  )
   
+  func TestOperator_NewOperator(t *testing.T) {
+    operator := NewOperator("+")
+    actual := operator.Calc(1, 2)
+    assert.Equal(t, 3, actual, "EQUAL")
+  }
+  ```
+  * ```go
+    assert.Equal()
+    assert.NotEqual()
+    assert.Nil()
+    assert.NotNil()
+    ```
+  - if문을 조금 줄일 수 있다.
