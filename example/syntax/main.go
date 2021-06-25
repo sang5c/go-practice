@@ -1,6 +1,6 @@
 package main
 
 func main() {
-	//forArr()
-	forStruct()
+	forArr()
+	//forStruct()
 }
