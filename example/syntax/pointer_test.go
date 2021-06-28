@@ -15,7 +15,6 @@ func TestPointerAddress(t *testing.T) {
 
 	if pValue1 == pValue2 {
 		fmt.Printf("%p %p", pValue1, pValue2)
-
 	}
 	assert.Equal(t, pValue1, pValue2)
 	assert.Same(t, pValue1, pValue2) // Pointer는 Same으로 비교해야 한다.
