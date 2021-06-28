@@ -34,3 +34,40 @@ func TestPointerAddress2(t *testing.T) {
 
 	fmt.Println(pA, pB, pC)
 }
+
+type Human struct {
+	Name string
+	age  int
+}
+
+func TestStructPointer(t *testing.T) {
+	human := Human{}
+
+	change(human)
+	assert.NotEqual(t, human.age, 99)
+	assert.NotEqual(t, human.Name, "HELLO")
+
+	changeUsePointer(&human)
+	assert.Equal(t, human.age, 99)
+	assert.Equal(t, human.Name, "HELLO")
+
+	human2 := human
+	human3 := human
+	fmt.Printf("%p, %p\n", &human2, &human3)
+	assert.NotSame(t, human2, human3)
+
+	human4 := &human
+	human5 := &human
+	fmt.Printf("%p, %p\n", human4, human5)
+	assert.Same(t, human4, human5)
+}
+
+func changeUsePointer(human *Human) {
+	human.age = 99
+	human.Name = "HELLO"
+}
+
+func change(human Human) {
+	human.age = 99
+	human.Name = "HELLO"
+}
