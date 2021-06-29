@@ -27,3 +27,14 @@
 
 ## 문자열
 - 문자열 대소 비교는 문자열 길이와 관계 없이 앞글자부터 비교. UTF-8 값으로 비교한다.
+- string 내부 구조.
+  ```go
+  // value.go
+  type StringHeader struct {
+    Data uintptr // 문자열을 가리키는 포인터
+    Len int      // 문자열 길이
+  }
+  ```
+- string은 불변
+  - slice로 형변환시 새로운 메모리 공간 연결
+  - string concat시 새로 메모리 공간 연결

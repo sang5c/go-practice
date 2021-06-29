@@ -3,8 +3,10 @@ package main_test
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
+	"reflect"
 	"testing"
 	"unicode/utf8"
+	"unsafe"
 )
 
 func TestBackQuote(t *testing.T) {
@@ -32,4 +34,29 @@ func TestStrLen(t *testing.T) {
 	assert.Equal(t, 3, len([]rune(str2)))
 	assert.Equal(t, 7, len([]rune(str3)))
 	assert.Equal(t, 7, utf8.RuneCountInString(str3))
+}
+
+func TestStringStruct(t *testing.T) {
+	str1 := "하이"
+	str2 := str1
+	assert.Equal(t, "하이", str2)
+
+	stringHeader1 := (*reflect.StringHeader)(unsafe.Pointer(&str1))
+	stringHeader2 := (*reflect.StringHeader)(unsafe.Pointer(&str2))
+	assert.Equal(t, stringHeader1, stringHeader2)
+
+	slice := []byte(str1)
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
+	assert.NotEqual(t, stringHeader1, sliceHeader)
+}
+
+func TestConcat(t *testing.T) {
+	str1 := "hi"
+	temp := str1
+	str1 += "hello"
+
+	stringHeader1 := (*reflect.StringHeader)(unsafe.Pointer(&str1))
+	stringHeader2 := (*reflect.StringHeader)(unsafe.Pointer(&temp))
+
+	assert.NotEqual(t, stringHeader1, stringHeader2)
 }
