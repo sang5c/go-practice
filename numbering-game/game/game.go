@@ -9,9 +9,13 @@ type Game struct {
 	Number int
 }
 
-func New() *Game{
+func New() *Game {
 	return &Game{
 		0,
 		20,
 	}
+}
+
+func (game *Game) isMatched(target int) bool {
+	return game.Number == target
 }
