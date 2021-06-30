@@ -12,6 +12,18 @@ func TestNew(t *testing.T) {
 
 func TestIsMatched(t *testing.T) {
 	game := New()
-	assert.True(t, game.isMatched(20))
-	assert.False(t, game.isMatched(21))
+	matched, _ := game.Compare(20)
+	assert.Equal(t, 0, matched)
+}
+
+func TestCountUp(t *testing.T) {
+	// given
+	game := New()
+
+	// when
+	matched, count := game.Compare(12)
+
+	// then
+	assert.NotEqual(t, 0, matched)
+	assert.Equal(t, 1, count)
 }

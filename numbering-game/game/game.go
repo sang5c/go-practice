@@ -1,12 +1,8 @@
 package game
 
-// 숫자 입력
-// 숫자 비교. 맞으면 끝, 틀리면 다시
-// 틀리면 카운트 +1
-
 type Game struct {
-	Count  int
-	Number int
+	count  int
+	number int
 }
 
 func New() *Game {
@@ -16,6 +12,13 @@ func New() *Game {
 	}
 }
 
-func (game *Game) isMatched(target int) bool {
-	return game.Number == target
+func (game *Game) Compare(target int) (int, int) {
+	game.count++
+	result := 0
+	if target > game.number {
+		result = -1
+	} else if game.number > target {
+		result = 1
+	}
+	return result, game.count
 }
