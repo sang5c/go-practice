@@ -1,3 +1,9 @@
+## 참고
+- Tucker의 GO 언어 프로그래밍
+- [예제로 배우는 Go 프로그래밍](http://golang.site/)
+- Slice
+  - [[Go] Slice 집중 탐구](https://velog.io/@kimmachinegun/Go-Slice-%EC%A7%91%EC%A4%91-%ED%83%90%EA%B5%AC-t2jn1kd1gc)
+
 ## 구조체
 - Go에서 대입은 기본적으로 "복사"다
 - 구조체 변수를 다른 변수에 대입해도 값이 복사되고, 함수의 파라미터로 전달하는 값도 복사된다. (call by value)
@@ -38,3 +44,18 @@
 - string은 불변
   - slice로 형변환시 새로운 메모리 공간 연결
   - string concat시 새로 메모리 공간 연결
+  
+## Slice
+- contains 함수가 없다.
+- 구조
+  ```go
+  type SliceHeader struct {
+    Data uintptr
+    Len int
+    Cap int
+  }
+  ```
+- 슬라이스는 배열의 주소(Data)와 길이(len), 용량(cap)을 갖는다.
+  - 용량과 길이를 확인하려면 cap(slice), len(slice)을 사용한다.
+- 생성시에 용량을 생략하면 길이와 용량이 같은 슬라이스가 생성된다.
+  
