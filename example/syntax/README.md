@@ -1,5 +1,5 @@
 ## 참고
-- Tucker의 GO 언어 프로그래밍
+- [Tucker의 GO 언어 프로그래밍](yes24.com/Product/Goods/99108736?OzSrank=1)
 - [예제로 배우는 Go 프로그래밍](http://golang.site/)
 - Slice
   - [[Go] Slice 집중 탐구](https://velog.io/@kimmachinegun/Go-Slice-%EC%A7%91%EC%A4%91-%ED%83%90%EA%B5%AC-t2jn1kd1gc)
