@@ -1,12 +1,12 @@
 package main
 
 import (
-	Get "example/http/get"
-	"example/http/post"
+	Get2 "example/http/client/get"
+	"example/http/client/post"
 )
 
 func main() {
-	Get.DoGet()
+	Get2.DoGet()
 	Post.DoPost()
 
 	jsonHandling()
