@@ -1,4 +1,4 @@
-package main
+package chapter3_test
 
 import (
 	"fmt"
@@ -10,15 +10,27 @@ import (
 	"time"
 )
 
-func connectToService() interface{} {
+func warmServiceConnCache2() *sync.Pool {
+	p := &sync.Pool{
+		New: connectToService2,
+	}
+	for i := 0; i < 10; i++ {
+		p.Put(p.New())
+	}
+	return p
+}
+
+func connectToService2() interface{} {
 	time.Sleep(1 * time.Second)
 	return struct{}{}
 }
 
-func startNetworkDaemon() *sync.WaitGroup {
+func startNetworkDaemon2() *sync.WaitGroup {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
+		connPool := warmServiceConnCache2()
+
 		server, err := net.Listen("tcp", "localhost:8080")
 		if err != nil {
 			log.Fatalf("cannot listen: %v", err)
@@ -33,20 +45,21 @@ func startNetworkDaemon() *sync.WaitGroup {
 				log.Printf("cannot accept connection: %v", err)
 				continue
 			}
-			connectToService()
+			svcConn := connPool.Get()
 			fmt.Fprintln(conn, "")
+			connPool.Put(svcConn)
 			conn.Close()
 		}
 	}()
 	return &wg
 }
 
-//func init() {
-//	daemonStarted := startNetworkDaemon()
-//	daemonStarted.Wait()
-//}
+func init() {
+	daemonStarted := startNetworkDaemon2()
+	daemonStarted.Wait()
+}
 
-func BenchmarkNetworkRequest(b *testing.B) {
+func BenchmarkNetworkRequest2(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		conn, err := net.Dial("tcp", "localhost:8080")
 		if err != nil {
