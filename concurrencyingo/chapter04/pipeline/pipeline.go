@@ -1,11 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 func main() {
 	all()    // 일괄처리
 	stream() // 스트림 지향
 	extend() // 좀더 모범 사례
+
+	generators() // 유용한 생성기들
 }
 
 func all() {
@@ -101,4 +106,94 @@ func extend() {
 	for v := range pipeline {
 		fmt.Println(v)
 	}
+}
+
+func generators() {
+	repeat := func(done <-chan interface{}, values ...interface{}) <-chan interface{} {
+		valueStream := make(chan interface{}, 3)
+		// done 채널에 신호가 올때까지 valueStream에 values를 계속 넣는다.
+		go func() {
+			defer close(valueStream)
+			for {
+				for _, v := range values {
+					select {
+					case <-done:
+						return
+					case valueStream <- v:
+					}
+
+				}
+			}
+		}()
+		return valueStream
+	}
+
+	// valueStream에서 num 만큼의 개수를 꺼내서 채널에 담는다.
+	take := func(done <-chan interface{}, valueStream <-chan interface{}, num int) <-chan interface{} {
+		takeStream := make(chan interface{})
+		go func() {
+			defer close(takeStream)
+			for i := 0; i < num; i++ {
+				select {
+				case <-done:
+					return
+				case takeStream <- <-valueStream:
+				}
+			}
+		}()
+		return takeStream
+	}
+
+	done := make(chan interface{})
+	defer close(done)
+
+	for num := range take(done, repeat(done, 1, 2), 10) {
+		fmt.Printf("%v ", num)
+	}
+
+	// 반복 함수 호출 생성기. 받은 함수의 실행 결과를 채널에 계속 담는다.
+	repeatFn := func(done <-chan interface{}, fn func() interface{}) <-chan interface{} {
+		valueStream := make(chan interface{})
+		go func() {
+			defer close(valueStream)
+			for {
+				select {
+				case <-done:
+					return
+				case valueStream <- fn():
+				}
+			}
+		}()
+		return valueStream
+	}
+
+	getRand := func() interface{} {
+		return rand.Int()
+	}
+
+	for num := range take(done, repeatFn(done, getRand), 10) {
+		fmt.Println(num)
+	}
+
+	// interface{} 타입인 valueStream을 받아 string으로 타입을 변환해준다.
+	toString := func(done <-chan interface{}, valueStream <-chan interface{}) <-chan string {
+		stringStream := make(chan string)
+		go func() {
+			defer close(stringStream)
+			for v := range valueStream {
+				select {
+				case <-done:
+					return
+				case stringStream <- v.(string):
+				}
+			}
+		}()
+		return stringStream
+	}
+
+	var message string
+	for token := range toString(done, take(done, repeat(done, "I", "am."), 5)) {
+		message += token
+	}
+	fmt.Printf("message: %s...", message)
 }
