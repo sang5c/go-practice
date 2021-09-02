@@ -60,10 +60,7 @@ func main() {
 		return valStream
 	}
 
-	tee := func(
-		done <-chan interface{},
-		in <-chan interface{},
-	) (_, _ <-chan interface{}) {
+	tee := func(done <-chan interface{}, in <-chan interface{}) (_, _ <-chan interface{}) {
 		out1 := make(chan interface{})
 		out2 := make(chan interface{})
 
