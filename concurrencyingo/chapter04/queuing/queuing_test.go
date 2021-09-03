@@ -14,10 +14,8 @@ func BenchmarkUnbufferedWrite(b *testing.B) {
 }
 
 func BenchmarkBufferedWrite(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		bufferedFile := bufio.NewWriter(tmpFileOrFatal())
-		performWrite(b, bufio.NewWriter(bufferedFile))
-	}
+	bufferedFile := bufio.NewWriter(tmpFileOrFatal())
+	performWrite(b, bufio.NewWriter(bufferedFile))
 }
 
 func performWrite(b *testing.B, writer io.Writer) {
