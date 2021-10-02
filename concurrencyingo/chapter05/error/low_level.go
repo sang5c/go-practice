@@ -13,5 +13,5 @@ func isGloballyExec(path string) (bool, error) {
 			wrapError(err, err.Error()),
 		}
 	}
-	return info.Mode().Perm()&0100 == 0100, nil
+	return info.Mode().Perm()&0100 == 0100, nil // execute 권한이 있는지 확인한다.
 }
