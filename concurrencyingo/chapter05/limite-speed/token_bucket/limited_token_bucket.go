@@ -1,4 +1,4 @@
-package main
+package token_bucket
 
 import (
 	"context"
@@ -8,17 +8,17 @@ import (
 	"sync"
 )
 
-func Open() *APIConnection {
-	return &APIConnection{
+func Open2() *APIConnection2 {
+	return &APIConnection2{
 		rateLimiter: rate.NewLimiter(rate.Limit(1), 1),
 	}
 }
 
-type APIConnection struct {
+type APIConnection2 struct {
 	rateLimiter *rate.Limiter
 }
 
-func (a *APIConnection) ReadFile(ctx context.Context) error {
+func (a *APIConnection2) ReadFile(ctx context.Context) error {
 	if err := a.rateLimiter.Wait(ctx); err != nil {
 		return err
 	}
@@ -26,7 +26,7 @@ func (a *APIConnection) ReadFile(ctx context.Context) error {
 	return nil
 }
 
-func (a *APIConnection) ResolveAddress(ctx context.Context) error {
+func (a *APIConnection2) ResolveAddress(ctx context.Context) error {
 	if err := a.rateLimiter.Wait(ctx); err != nil {
 		return err
 	}
@@ -34,7 +34,7 @@ func (a *APIConnection) ResolveAddress(ctx context.Context) error {
 	return nil
 }
 
-func main() {
+func Do2() {
 	defer log.Printf("Done.")
 	log.SetOutput(os.Stdout)
 	log.SetFlags(log.Ltime | log.LUTC)
