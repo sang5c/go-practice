@@ -1,6 +1,6 @@
 package main
 
 func main() {
-	//myRecover()
-	recoverWithClosure()
+	myRecover()
+	//recoverWithClosure()
 }
